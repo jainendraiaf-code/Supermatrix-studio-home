@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SUPERMATRIX STUDIO</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            background:#070709;
+            background-image: 
+                radial-gradient(circle at 10% 40%, rgba(65,30,110,0.25) 0%, transparent 45%),
+                radial-gradient(circle at 90% 60%, rgba(10,80,70,0.15) 0%, transparent 45%);
+            background-repeat:no-repeat;
+            background-size:cover;
+            background-attachment:fixed;
+            color:white;
+            font-family:Arial,sans-serif;
+            overflow-x:hidden;
+        }
+
+        .container { max-width:1200px; margin:0 auto; padding:0 40px; width:100%; }
+
+        /* GLOW ANIMATION */
+        @keyframes glowCyan {
+            0%, 100% { text-shadow: 0 0 2px #00d4ff; }
+            50% { text-shadow: 0 0 12px #00d4ff; }
+        }
+        @keyframes glowPurple {
+            0%, 100% { text-shadow: 0 0 2px #b580ff; }
+            50% { text-shadow: 0 0 12px #b580ff; }
+        }
+        .text-anim-cyan { color: #00d4ff; font-weight: bold; display: inline-block; animation: glowCyan 2.5s infinite ease-in-out; }
+        .text-anim-purple { color: #b580ff; font-weight: bold; display: inline-block; animation: glowPurple 2.5s infinite ease-in-out; }
+
+        /* BLOG SECTION */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+        }
+        .blog-card {
+            background:#111827;
+            border-radius:12px;
+            overflow:hidden;
+            height:auto;
+            transition:transform 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+        }
+        .blog-card:hover { transform:translateY(-8px); }
+        .blog-img {
+            width:100%;
+            height:auto;
+            object-fit:cover;
+            border-radius:12px 12px 0 0;
+        }
+        .blog-meta { padding:16px 20px 0; font-size:13px; color:#64748b; display:flex; justify-content:space-between; }
+        .blog-author { color:#22d3ee; font-weight:600; }
+        .blog-title { display:block; padding:12px 20px 8px; font-size:20px; font-weight:700; color:white; line-height:1.3; text-decoration:none; }
+        .blog-desc { padding:0 20px 16px; font-size:14px; color:#94a3b8; line-height:1.5; }
+        .blog-tags { padding:0 20px 20px; display:flex; flex-wrap:wrap; gap:8px; }
+        .tag {
+            background:#0ea5e9;
+            color:white;
+            padding:4px 12px;
+            border-radius:9999px;
+            font-size:12px;
+            font-weight:500;
+        }
+
+        /* REST OF STYLES (UNCHANGED) */
+        .header-stack { position:fixed; top:0; left:0; width:100%; z-index:9999; }
+        .top-banner { background:rgba(125,67,194,0.8); backdrop-filter:blur(25px); text-align:center; padding:10px 0; font-size:11px; letter-spacing:0.5px; }
+        header { background:rgba(7,7,9,0.65); backdrop-filter:blur(25px); border-bottom:1px solid rgba(255,255,255,0.05); }
+        .header-content { display:flex; justify-content:space-between; align-items:center; height:75px; }
+        .logo-area { display:flex; align-items:center; gap:12px; }
+        .logo-area img { height:24px; width:auto; border-radius:4px; }
+        .logo-text { font-family:'Pixelify Sans',sans-serif; font-size:18px; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+        .nav-links { display:flex; align-items:center; gap:24px; }
+        .nav-links a { color:#cccccc; text-decoration:none; font-size:13px; transition:color 0.2s ease; }
+        .nav-links a:hover { color:#00d4ff; }
+        .btn-play { background:#ffb900; color:black; border:none; padding:9px 18px; border-radius:4px; font-size:13px; cursor:pointer; margin-left:10px; transition:background 0.2s; }
+        .btn-play:hover { background:#e5a600; }
+
+        .hero { padding:160px 0 100px; }
+        .hero h1 { font-family:'Orbitron',sans-serif; font-size:60px; font-weight:700; line-height:1.1; letter-spacing:-1px; }
+        .hero h1 .cyan { color:#00d4ff; text-shadow:0 0 15px rgba(0,212,255,0.4); }
+        .hero p { color:#a1a1aa; font-size:15px; margin:20px 0 35px; max-width:600px; line-height:1.5; }
+        .btn-group { display:flex; gap:16px; }
+        .btn-primary, .btn-secondary { padding:12px 24px; border-radius:4px; font-size:13px; cursor:pointer; transition:all 0.2s; }
+        .btn-primary { background:#ffb900; color:black; border:none; }
+        .btn-primary:hover { background:#e5a600; }
+        .btn-secondary { background:transparent; color:#7e55df; border:1px solid #7e55df; }
+        .btn-secondary:hover { background:#7e55df; color:white; }
+
+        .about-section { background:#0b0b0e; padding:80px 0; border-top:1px solid rgba(255,255,255,0.02); }
+        .about-grid { display:grid; grid-template-columns:1fr auto; gap:60px; align-items:flex-start; }
+        .about-text { max-width:500px; }
+        .about-text h2 { font-family:'Orbitron',sans-serif; font-size:34px; font-weight:700; margin-bottom:25px; letter-spacing:-0.5px; }
+        .about-text p { color:#d1d5db; font-size:15px; line-height:1.6; margin-bottom:20px; }
+        .about-cards { display:flex; gap:20px; }
+        .profile-card { width:240px; background:#1a1a1c; border-radius:8px; overflow:hidden; display:flex; flex-direction:column; }
+        .card-top { height:240px; display:flex; justify-content:center; align-items:center; }
+        .bg-purple { background:#614a9b; }
+        .bg-teal { background:#0b8a9f; }
+        .card-numbers { font-family:Arial Rounded MT Bold,Arial,sans-serif; font-size:70px; font-weight:900; color:#111; line-height:0.95; letter-spacing:5px; display:flex; flex-direction:column; align-items:center; }
+        .card-icon { width:110px; height:110px; }
+        .card-bottom { padding:20px; background:#1c1c1e; }
+        .card-bottom h3 { font-size:16px; font-weight:bold; margin-bottom:5px; }
+        .card-bottom span { font-size:13px; color:#9ca3af; }
+
+        .featured-section { padding:0 0 80px; }
+        .featured-header { font-family:'Orbitron',sans-serif; font-size:24px; font-weight:700; margin-bottom:25px; }
+        .featured-card { background:#16092b; border-radius:8px; display:flex; overflow:hidden; border:1px solid rgba(255,255,255,0.03); }
+        .featured-image { width:50%; background-color:#16092b; position:relative; min-height:350px; }
+        .featured-image img { width:100%; height:100%; object-fit:cover; object-position:center; }
+        .featured-image::after { content:""; position:absolute; top:0; right:0; width:60px; height:100%; background:linear-gradient(to right, transparent, #16092b); }
+        .featured-content { width:50%; padding:40px; display:flex; flex-direction:column; justify-content:center; }
+        .featured-content p { font-size:13px; line-height:1.6; color:#d1d5db; margin-bottom:15px; }
+        .text-purple { color:#b580ff; font-weight:bold; }
+        .featured-list { margin:10px 0 30px 20px; }
+        .featured-list li { font-size:13px; color:#d1d5db; margin-bottom:8px; line-height:1.5; }
+        .btn-purple { background:#8b5cf6; color:white; border:none; padding:10px 24px; border-radius:4px; font-size:13px; font-weight:bold; cursor:pointer; width:fit-content; transition:background 0.2s; }
+        .btn-purple:hover { background:#7c3aed; }
+
+        .news-section { padding:80px 0; background:#070709; }
+        .news-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:30px; }
+        .news-card { background:#11091a; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); display:flex; flex-direction:column; transition:transform 0.2s; }
+        .news-card:hover { transform:translateY(-5px); }
+        .news-img { width:100%; height:200px; object-fit:cover; background:#1a1030; }
+        .news-content { padding:25px; display:flex; flex-direction:column; flex-grow:1; }
+        .news-content h3 { font-size:18px; margin-bottom:15px; color:white; line-height:1.4; }
+        .news-content p { font-size:13px; color:#a1a1aa; margin-bottom:20px; line-height:1.6; flex-grow:1; }
+        .read-more { color:#00d4ff; text-decoration:none; font-size:13px; font-weight:bold; transition:0.2s; }
+        .read-more:hover { color:#fff; text-shadow:0 0 8px rgba(0,212,255,0.6); }
+
+        .blog-section { padding:80px 0; background:#0b0b0e; border-top:1px solid rgba(255,255,255,0.02); }
+
+        footer { 
+            background:#0a0a0f; 
+            padding:60px 0 30px; 
+            border-top:1px solid rgba(255,255,255,0.05); 
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        .footer-left .footer-logo {
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #22d3ee;
+        }
+        .footer-left p {
+            font-size: 14px;
+            color: #a1a1aa;
+            margin-top: 8px;
+        }
+        .footer-right h3 {
+            color: #a1a1aa;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .social-links { display:flex; gap:24px; }
+        .social-links a { color:#a1a1aa; text-decoration:none; font-size:14px; font-weight:bold; transition:0.2s; }
+        .social-links a:hover { color:#00d4ff; }
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: #637b9d;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (max-width:1024px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width:768px) { 
+            .blog-grid { grid-template-columns: 1fr; } 
+            .footer-grid { flex-direction: column; gap: 30px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-stack">
+    <div class="top-banner">TRY OUT OUR LATEST GAMES NOW! →</div>
+    <header>
+        <div class="container header-content">
+            <div class="logo-area">
+                <img src="https://supermatrix.studio/favicon.ico" alt="Supermatrix Studio Logo">
+                <div class="logo-text">SUPERMATRIX STUDIO</div>
+            </div>
+            <nav class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Projects</a>
+                <a href="#">About</a>
+                <a href="#">Blog</a>
+                <a href="#">News</a>
+                <button class="btn-play">Play Now!</button>
+            </nav>
+        </div>
+    </header>
+</div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <h1>Crafting <span class="cyan">Next-Generation</span><br>Gaming Experiences</h1>
+            <p>We build immersive worlds with cutting-edge technology and bold art direction.</p>
+            <div class="btn-group">
+                <button class="btn-primary">Try Our Latest Release</button>
+                <button class="btn-secondary">Learn About Us</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container about-grid">
+            <div class="about-text">
+                <h2>About the Studio</h2>
+                <p>Supermatrix is a two-person studio inspired by the formative classics of our youth like 
+                    <span class="text-anim-cyan">Project I.G.I.</span> and <span class="text-anim-purple">Virtua Cop 2.</span>
+                </p>
+                <p>Using <span class="text-anim-purple">Godot</span> and <span class="text-anim-cyan">Blender</span>, we craft bold, system-driven 3D games with a focus on player-first design and striking aesthetics.</p>
+            </div>
+            <div class="about-cards">
+                <div class="profile-card">
+                    <div class="card-top bg-purple"><div class="card-numbers"><span>01</span><span>10</span></div></div>
+                    <div class="card-bottom"><h3>404rakshit</h3><span>Logic Builder</span></div>
+                </div>
+                <div class="profile-card">
+                    <div class="card-top bg-teal">
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <div class="card-bottom"><h3>cyberdevz</h3><span>3D Designer</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="featured-header">Featured: Extension Protocol</h2>
+            <div class="featured-card">
+                <div class="featured-image">
+                    <img src="https://supermatrix.studio/poster.png" alt="Extension Protocol Cover Art">
+                </div>
+                <div class="featured-content">
+                    <p>Enter the world of <span class="text-purple">Extension Protocol</span>, a fun sci-fi shooting game. Scary aliens have attacked Earth and nearly wiped out everyone.</p>
+                    <p>You must fight to survive in ruined future cities and stop the swarms of alien monsters. Find out why they are here before it's too late.</p>
+                    <ul class="featured-list">
+                        <li>Enjoy exciting third-person action against waves of aliens.</li>
+                        <li>Explore dark and creepy levels set in a sci-fi future.</li>
+                        <li>Battle many different types of strange and tough aliens</li>
+                    </ul>
+                    <button class="btn-purple">See Progress</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="news-section">
+        <div class="container">
+            <h2 class="featured-header" style="margin-bottom: 40px;">Latest News</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <img src="https://ik.imagekit.io/2l0keap4c/News/1.webp" alt="Godot 4.5 Release" class="news-img">
+                    <div class="news-content">
+                        <h3>Godot 4.5 Release: Advancing Accessibility and Rendering Capabilities</h3>
+                        <p>Godot 4.5 is now available as a production-focused update to the 4.x series. This release delivers key optimizations to the Vulkan rendering backend for improved performance.</p>
+                        <a href="#" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://ik.imagekit.io/2l0keap4c/News/2.webp" alt="Unreal Engine 5.7 Preview" class="news-img">
+                    <div class="news-content">
+                        <h3>Unreal Engine 5.7 Preview: A Deep Dive into the Next Era</h3>
+                        <p>Explore the groundbreaking features of Unreal Engine 5.7 Preview. Discover production-ready PCG and Substrate, revolutionary Nanite foliage, and next-gen animation tools.</p>
+                        <a href="#" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://ik.imagekit.io/2l0keap4c/News/3.webp" alt="Battlefield 6 vs Black Ops 7" class="news-img">
+                    <div class="news-content">
+                        <h3>Innovation vs. Iteration: Why Battlefield 6 is Winning the FPS War</h3>
+                        <p>As the dust settles from both betas, players are siding with Battlefield 6's 'genuine innovation' over what many are calling a 'shallow upgrade' from Call of Duty.</p>
+                        <a href="#" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-section">
+        <div class="container">
+            <h2 class="featured-header" style="margin-bottom: 40px;">Latest from the Blog</h2>
+            <div class="blog-grid">
+                <!-- All 9 blog cards remain exactly the same -->
+                <div class="blog-card">
+                    <a href="#"><img src="https://ik.imagekit.io/2l0keap4c/Thumb/iso2.webp" alt="How to Make an Isometric Game Environment" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>October 9, 2025</span></div>
+                    <a href="#" class="blog-title">How to Make an Isometric Game Environment: 2D vs 3D</a>
+                    <p class="blog-desc">Explore the two main workflows for creating classic isometric worlds. We compare the "True 2D" sprite-based approach with the modern "3D-as-isometric" method.</p>
+                    <div class="blog-tags"><span class="tag">Isometric</span><span class="tag">Game Dev</span><span class="tag">Godot</span><span class="tag">Blender</span><span class="tag">Level Design</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://ik.imagekit.io/2l0keap4c/Thumb/Blog%20Thumbnail.webp" alt="Creating a Stylized 3D Cel Shader in Godot 4" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>September 28, 2025</span></div>
+                    <a href="#" class="blog-title">Creating a Stylized 3D Cel Shader in Godot 4 from Scratch</a>
+                    <p class="blog-desc">Transform your 3D models with a custom cel shader! This step-by-step guide teaches you how to create the popular anime and cartoon look in Godot 4.</p>
+                    <div class="blog-tags"><span class="tag">Godot 4</span><span class="tag">Shaders</span><span class="tag">Game Dev</span><span class="tag">3D Art</span><span class="tag">Cel Shading</span><span class="tag">Tutorial</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://ik.imagekit.io/2l0keap4c/Thumb/blog-thumbnail-2.webp" alt="Best Workflow for Exporting Animated Characters" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>September 17, 2025</span></div>
+                    <a href="#" class="blog-title">Best Workflow for Exporting Animated Characters from Blender to Godot</a>
+                    <p class="blog-desc">Stop struggling with messy animation exports! This definitive guide reveals the best workflow using Blender's NLA Editor and glTF 2.0.</p>
+                    <div class="blog-tags"><span class="tag">Blender</span><span class="tag">Godot 4</span><span class="tag">3D Animation</span><span class="tag">Game Dev</span><span class="tag">Workflow</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://ik.imagekit.io/2l0keap4c/Thumb/blog-thumbnail.png" alt="Creating a Simple Inventory System" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>September 16, 2025</span></div>
+                    <a href="#" class="blog-title">Creating a Simple Inventory System for a 2D RPG in Godot</a>
+                    <p class="blog-desc">Learn to build a foundational RPG feature from scratch. This tutorial guides you through creating a flexible...</p>
+                    <div class="blog-tags"><span class="tag">Godot 4</span><span class="tag">Game Dev</span><span class="tag">RPG</span><span class="tag">Tutorial</span><span class="tag">GDScript</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://ik.imagekit.io/2l0keap4c/Thumb/THUMBNAILS-05.webp" alt="UV Mapping Guide" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>September 16, 2025</span></div>
+                    <a href="#" class="blog-title">From Blender to Godot: A Guide to UV Mapping for Perfect Gradients</a>
+                    <p class="blog-desc">Struggling to export gradient materials from Blender to Godot? This guide provides a step-by-step workflow...</p>
+                    <div class="blog-tags"><span class="tag">Blender</span><span class="tag">Godot</span><span class="tag">UV Mapping</span><span class="tag">Game Dev</span><span class="tag">3D Modeling</span><span class="tag">GLTF</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://ik.imagekit.io/2l0keap4c/Thumb/THUMBNAILS.png" alt="Low Poly Optimization" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>September 15, 2025</span></div>
+                    <a href="#" class="blog-title">Optimizing Low-Poly 3D Models from Blender for Mobile Game Performance</a>
+                    <p class="blog-desc">Is your mobile game lagging? Learn essential techniques in Blender to optimize your 3D models...</p>
+                    <div class="blog-tags"><span class="tag">Optimization</span><span class="tag">Blender</span><span class="tag">Mobile Games</span><span class="tag">Game Dev</span><span class="tag">3D Modeling</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://ik.imagekit.io/2l0keap4c/Thumb/blog-thumbnail-3.webp" alt="2D Character Animation" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>October 9, 2025</span></div>
+                    <a href="#" class="blog-title">Step-by-Step Guide to 2D Character Animation in Godot 4</a>
+                    <p class="blog-desc">Bring your 2D characters to life! This beginner-friendly tutorial covers the complete process of creating sprites...</p>
+                    <div class="blog-tags"><span class="tag">Godot 4</span><span class="tag">2D Animation</span><span class="tag">Game Dev</span><span class="tag">Pixel Art</span><span class="tag">Tutorial</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ka55cgdrqis1mlemgojt.png" alt="PBR Materials" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>September 27, 2025</span></div>
+                    <a href="#" class="blog-title">How to Create Realistic PBR Materials in Blender for Godot 4</a>
+                    <p class="blog-desc">A complete step-by-step guide on creating, baking, and exporting physically based rendering (PBR) materials...</p>
+                    <div class="blog-tags"><span class="tag">Godot 4</span><span class="tag">Blender</span><span class="tag">Game Dev</span><span class="tag">3D Art</span><span class="tag">PBR</span></div>
+                </div>
+                <div class="blog-card">
+                    <a href="#"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zctblgpuao1yb5v32vl5.png" alt="Concept Art using AI" class="blog-img"></a>
+                    <div class="blog-meta"><span class="blog-author">@cyberdevz</span><span>October 9, 2025</span></div>
+                    <a href="#" class="blog-title">How did I Create Concept Arts using AI</a>
+                    <p class="blog-desc">Discover how to create stunning concept art with AI using our step-by-step guide. Learn the complete...</p>
+                    <div class="blog-tags"><span class="tag">AI</span><span class="tag">Concept Art</span><span class="tag">Game Dev</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container footer-grid">
+        <div class="footer-left">
+            <div class="footer-logo">Supermatrix Studio</div>
+            <p>Building immersive, neon-drenched worlds.</p>
+        </div>
+        <div class="footer-right">
+            <h3>Social</h3>
+            <div class="social-links">
+                <a href="https://x.com/supermatrixgame">Twitter</a>
+                <a href="https://www.instagram.com/supermatrixgames/">Instagram</a>
+                <a href="https://www.youtube.com/@supermatrixgamesz">YouTube</a>
+                <a href="https://www.linkedin.com/company/supermatrixgames/">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        © 2026 Supermatrix Studio. All rights reserved.
+    </div>
+</footer>
+
+</body>
+</html>
